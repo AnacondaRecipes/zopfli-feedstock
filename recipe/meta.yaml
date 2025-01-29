@@ -1,39 +1,49 @@
 {% set name = "zopfli" %}
-{% set version = "0.2.2" %}
-{% set bundle = "zip" %}
-{% set hash = "2d49db7540d9991976af464ebc1b9ed12988c04d90691bcb51dc4a373a9e2afc" %}
+{% set version = "0.2.3" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  sha256: {{ hash }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.zip
+  sha256: dbc9841bedd736041eb5e6982cd92da93bee145745f5422f3795f6f258cdc6ef
+  patches:
+    - patches/0001-fix-headers.patch
 
 build:
+  skip: True # [py<38]
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  script:
+    # Unvendor libzopfli
+    - export USE_SYSTEM_ZOPFLI=1
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - patch       # [not win]
+    - m2-patch    # [win]
   host:
     - python
     - pip
     - setuptools_scm
+    - libzopfli
   run:
     - python
 
 test:
+  source_files:
+    - tests
+    - README.rst
   imports:
     - zopfli
   requires:
     - pip
+    - pytest
   commands:
     - pip check
+    - pytest -v
 
 about:
   home: https://github.com/obp/zopfli

@@ -1,0 +1,27 @@
+From 1179ecb38e5db6ef60fcd1e26edc24b1cf736b86 Mon Sep 17 00:00:00 2001
+From: Mohamed Sentissi <msentissi@anaconda.com>
+Date: Tue, 28 Jan 2025 17:59:43 -0500
+Subject: [PATCH] fix headers
+
+---
+ src/zopflimodule.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/zopflimodule.c b/src/zopflimodule.c
+index ab41e5d..d393cbe 100644
+--- a/src/zopflimodule.c
++++ b/src/zopflimodule.c
+@@ -4,8 +4,8 @@
+ #include <stdlib.h>
+ 
+ #ifdef SYSTEM_ZOPFLI
+-#define ZOPFLI_H <zopfli.h>
+-#define ZOPFLIPNG_H <zopflipng_lib.h>
++#define ZOPFLI_H <zopfli/zopfli.h>
++#define ZOPFLIPNG_H <zopfli/zopflipng_lib.h>
+ #else
+ #define ZOPFLI_H "../zopfli/src/zopfli/zopfli.h"
+ #define ZOPFLIPNG_H "../zopfli/src/zopflipng/zopflipng_lib.h"
+-- 
+2.39.3 (Apple Git-146)
+
