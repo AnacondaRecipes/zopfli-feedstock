@@ -28,6 +28,7 @@ requirements:
     - python
     - pip
     - setuptools_scm
+    - wheel
     - libzopfli
   run:
     - python
@@ -46,12 +47,15 @@ test:
     - pytest -v
 
 about:
-  home: https://github.com/obp/zopfli
+  home: https://github.com/fonttools/py-zopfli
   license_file: COPYING
   license: Apache-2.0
   license_family: Apache
   summary: Zopfli module for python
-  dev_url: https://github.com/obp/zopfli
+  description: |
+    pyzopfli is a straight forward wrapper around zopfli's ZlibCompress method.
+  dev_url: https://github.com/fonttools/py-zopfli
+  doc_url: https://github.com/fonttools/py-zopfli/blob/master/README.rst
 
 extra:
   recipe-maintainers:
