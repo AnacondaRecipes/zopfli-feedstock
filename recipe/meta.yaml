@@ -1,47 +1,61 @@
 {% set name = "zopfli" %}
-{% set version = "0.2.2" %}
-{% set bundle = "zip" %}
-{% set hash = "2d49db7540d9991976af464ebc1b9ed12988c04d90691bcb51dc4a373a9e2afc" %}
+{% set version = "0.2.3.post1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  sha256: {{ hash }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 96484dc0f48be1c5d7ae9f38ed1ce41e3675fd506b27c11a6607f14b49101e99
+  patches:
+    - patches/0001-fix-headers.patch
 
 build:
+  skip: True # [py<38]
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  script:
+    # Unvendor libzopfli
+    - export USE_SYSTEM_ZOPFLI=1
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - patch       # [not win]
+    - m2-patch    # [win]
   host:
     - python
     - pip
     - setuptools_scm
+    - wheel
+    - libzopfli 1.0.3
   run:
     - python
 
 test:
+  source_files:
+    - tests
+    - README.rst
   imports:
     - zopfli
   requires:
     - pip
+    - pytest
   commands:
     - pip check
+    - pytest -v
 
 about:
-  home: https://github.com/obp/zopfli
+  home: https://github.com/fonttools/py-zopfli
   license_file: COPYING
   license: Apache-2.0
   license_family: Apache
   summary: Zopfli module for python
-  dev_url: https://github.com/obp/zopfli
+  description: |
+    pyzopfli is a straight forward wrapper around zopfli's ZlibCompress method.
+  dev_url: https://github.com/fonttools/py-zopfli
+  doc_url: https://github.com/fonttools/py-zopfli/blob/master/README.rst
 
 extra:
   recipe-maintainers:
