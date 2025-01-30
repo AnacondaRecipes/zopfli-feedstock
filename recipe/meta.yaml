@@ -29,7 +29,7 @@ requirements:
     - pip
     - setuptools_scm
     - wheel
-    - libzopfli
+    - libzopfli 1.0.3
   run:
     - python
 
