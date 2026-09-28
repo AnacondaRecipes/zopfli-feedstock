@@ -13,7 +13,7 @@ source:
 
 build:
   skip: True # [py<38]
-  number: 0
+  number: 1
   script:
     # Unvendor libzopfli
     - export USE_SYSTEM_ZOPFLI=1
@@ -21,9 +21,8 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
-    - patch       # [not win]
-    - m2-patch    # [win]
   host:
     - python
     - pip
